@@ -1,4 +1,4 @@
-# Website Generator Application
+# Website-Generator
 
 ## Overview
 The **Website Generator** is a Flask-based web application that allows users to **input any website URL** and instantly create a **similar-looking website**.
