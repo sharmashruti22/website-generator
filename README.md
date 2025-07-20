@@ -150,8 +150,6 @@ The **Website Generator** makes it easy to create **custom-branded versions of a
 
 ## Screenshots
 
-*(You can add screenshots later once you deploy – similar to your friend’s style)*
-
 1 Main Page
 <img width="2560" height="1600" alt="image" src="https://github.com/user-attachments/assets/714d416b-e435-4bfc-adeb-a675257b09b8" />
 
