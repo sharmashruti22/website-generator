@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EnAct - AI Website Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
+            min-height: 100vh;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Animated background pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 25% 25%, #60a5fa20 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, #3b82f620 0%, transparent 50%);
+            animation: backgroundMove 20s ease-in-out infinite;
+            z-index: -1;
+        }
+
+        @keyframes backgroundMove {
+            0%, 100% { transform: translateX(0) translateY(0); }
+            33% { transform: translateX(-30px) translateY(20px); }
+            66% { transform: translateX(30px) translateY(-20px); }
+        }
+
+        /* Header */
+        .header {
+            position: relative;
+            z-index: 10;
+            padding: 2rem 1.5rem;
+            text-align: center;
+        }
+
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .logo-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #60a5fa, #3b82f6);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: 0 4px 20px rgba(96, 165, 250, 0.3);
+        }
+
+        .logo-icon::before {
+            content: '⚡';
+            font-size: 24px;
+            color: white;
+        }
+
+        .logo-text {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #60a5fa, #93c5fd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .tagline {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 1rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .tagline .dot {
+            color: #60a5fa;
+            font-weight: 900;
+        }
+
+        .subtitle {
+            font-size: 1.125rem;
+            color: #94a3b8;
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Form Card */
+        .form-card {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(71, 85, 105, 0.3);
+            border-radius: 24px;
+            padding: 3rem;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .form-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #60a5fa, transparent);
+        }
+
+        .form-title {
+            font-size: 2rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, #ffffff, #cbd5e1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Form Groups */
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #e2e8f0;
+            margin-bottom: 0.75rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 1rem 1.25rem;
+            background: rgba(30, 41, 59, 0.8);
+            border: 2px solid rgba(71, 85, 105, 0.3);
+            border-radius: 12px;
+            color: #ffffff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #60a5fa;
+            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+            background: rgba(30, 41, 59, 1);
+        }
+
+        .form-input::placeholder {
+            color: #64748b;
+        }
+
+        /* Checkbox Group */
+        .checkbox-group {
+            max-height: 300px;
+            overflow-y: auto;
+            background: rgba(30, 41, 59, 0.5);
+            border: 2px solid rgba(71, 85, 105, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .checkbox-group::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .checkbox-group::-webkit-scrollbar-track {
+            background: rgba(71, 85, 105, 0.2);
+            border-radius: 3px;
+        }
+
+        .checkbox-group::-webkit-scrollbar-thumb {
+            background: #60a5fa;
+            border-radius: 3px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+
+        .checkbox-item:hover {
+            background: rgba(96, 165, 250, 0.1);
+            border-color: rgba(96, 165, 250, 0.3);
+        }
+
+        .checkbox-input {
+            width: 18px;
+            height: 18px;
+            accent-color: #60a5fa;
+            cursor: pointer;
+        }
+
+        .checkbox-label {
+            color: #e2e8f0;
+            font-weight: 500;
+            cursor: pointer;
+            text-transform: capitalize;
+        }
+
+        /* File Upload */
+        .file-upload {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100px;
+            background: rgba(30, 41, 59, 0.5);
+            border: 2px dashed rgba(96, 165, 250, 0.3);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .file-upload:hover {
+            border-color: #60a5fa;
+            background: rgba(96, 165, 250, 0.05);
+        }
+
+        .file-input {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .file-upload-text {
+            color: #64748b;
+            font-size: 0.875rem;
+            text-align: center;
+        }
+
+        .file-upload-icon {
+            font-size: 2rem;
+            color: #60a5fa;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Submit Button */
+        .submit-btn {
+            width: 100%;
+            padding: 1.25rem 2rem;
+            background: linear-gradient(135deg, #60a5fa, #3b82f6);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 1.125rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(96, 165, 250, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(96, 165, 250, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Alert Messages */
+        .alert {
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            background: rgba(239, 68, 68, 0.1);
+            color: #fca5a5;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+
+            .form-card {
+                padding: 2rem 1.5rem;
+                border-radius: 16px;
+            }
+
+            .logo-text {
+                font-size: 2rem;
+            }
+
+            .tagline {
+                font-size: 1.5rem;
+            }
+
+            .form-title {
+                font-size: 1.5rem;
+            }
+
+            .checkbox-group {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #ffffff;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 0.5rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="logo">
+            <div class="logo-icon"></div>
+            <div class="logo-text">EnAct</div>
+        </div>
+        <div class="tagline">
+            DISCOVER<span class="dot">.</span>BUILD<span class="dot">.</span>CREATE
+        </div>
+        <p class="subtitle">
+            Unleash the power of AI to transform your vision into stunning, professional websites. 
+            Experience the future of web development today.
+        </p>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <div class="form-card">
+            <h1 class="form-title">Create Your Website</h1>
+
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class="alert">
+                        {% for message in messages %}
+                            {{ message }}<br>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            <form method="POST" enctype="multipart/form-data" id="websiteForm">
+                <!-- Website URL -->
+                <div class="form-group">
+                    <label for="url" class="form-label">Website URL</label>
+                    <input 
+                        type="url" 
+                        class="form-input" 
+                        id="url" 
+                        name="url" 
+                        placeholder="https://example.com" 
+                        required
+                    >
+                </div>
+
+                <!-- Section Selection -->
+                <div class="form-group">
+                    <label class="form-label">Choose Website Sections</label>
+                    <div class="checkbox-group">
+                        {% for section in sections %}
+                            <div class="checkbox-item">
+                                <input 
+                                    class="checkbox-input" 
+                                    type="checkbox" 
+                                    name="sections" 
+                                    value="{{ section }}" 
+                                    id="{{ section }}"
+                                >
+                                <label class="checkbox-label" for="{{ section }}">
+                                    {{ section.title() }}
+                                </label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Logo Upload -->
+                <div class="form-group">
+                    <label class="form-label">Upload Logo (Optional)</label>
+                    <div class="file-upload">
+                        <input 
+                            class="file-input" 
+                            type="file" 
+                            id="logo" 
+                            name="logo" 
+                            accept="image/*"
+                        >
+                        <div class="file-upload-icon">📷</div>
+                        <div class="file-upload-text">
+                            Click to upload your logo<br>
+                            <small>PNG, JPG, SVG up to 5MB</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Banner Upload -->
+                <div class="form-group">
+                    <label class="form-label">Upload Banner (Optional)</label>
+                    <div class="file-upload">
+                        <input 
+                            class="file-input" 
+                            type="file" 
+                            id="banner" 
+                            name="banner" 
+                            accept="image/*"
+                        >
+                        <div class="file-upload-icon">🖼️</div>
+                        <div class="file-upload-text">
+                            Click to upload your banner<br>
+                            <small>PNG, JPG up to 10MB</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    <span id="btnText">Generate Website with AI</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // File upload preview
+        document.getElementById('logo').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const parent = e.target.closest('.file-upload');
+                parent.querySelector('.file-upload-text').innerHTML = 
+                    `Selected: ${file.name}<br><small>Ready to upload</small>`;
+            }
+        });
+
+        document.getElementById('banner').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const parent = e.target.closest('.file-upload');
+                parent.querySelector('.file-upload-text').innerHTML = 
+                    `Selected: ${file.name}<br><small>Ready to upload</small>`;
+            }
+        });
+
+        // Form submission with loading state
+        document.getElementById('websiteForm').addEventListener('submit', function(e) {
+            const submitBtn = document.getElementById('submitBtn');
+            const btnText = document.getElementById('btnText');
+            
+            submitBtn.disabled = true;
+            btnText.innerHTML = '<span class="loading"></span>Generating Your Website...';
+        });
+
+        // Smooth scrolling for better UX
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
